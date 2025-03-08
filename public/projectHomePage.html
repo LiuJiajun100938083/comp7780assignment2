@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Green World Online Shop</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 设置背景图片和半透明覆盖层 */
+        body {
+            background:
+                    linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)),
+                    url('https://i.natgeofe.com/n/c9107b46-78b1-4394-988d-53927646c72b/1095_3x2.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-container" style="position: relative;">
+        <img src="ecofriendly-planet-earth-covered-lush-green-vegetation-transparent-background_84443-28001.jpg.avif" alt="Eco Friendly Planet" class="header-photo">
+        <h1>Green World Online Shop</h1>
+        <!-- 右上角购物车按钮 -->
+        <a href="cart.html" class="cart-button" style="position: absolute; right: 20px; top: 20px; background-color: #0070c9; color: #fff; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-weight: 500;">Cart</a>
+    </div>
+    <nav style="text-align:center; margin-top:10px;">
+        <a href="login.html">User Login</a>
+        <a href="adminLogin.html">Admin Login</a>
+    </nav>
+    <!-- 显示用户登录信息 -->
+    <div id="user-info" style="text-align:center; margin-top:10px;"></div>
+</header>
+
+<section>
+    <!-- Green World介绍 -->
+    <article class="introduction">
+        <h3>GreenWorld! Online Shop</h3>
+        <p>Our goal is to promote "Green Environment" by re-cycling the items that you no longer need or use and sell them to the public for a discounted price.</p>
+        <p>All sales final - No refund or exchange.</p>
+        <p>Once we receive your payment, we will contact you for delivery.</p>
+    </article>
+
+    <!-- 产品展示区域，商品由 main.js 动态加载 -->
+    <div class="products-container" id="products-container"></div>
+
+    <!-- Team Members Section -->
+    <section class="team-section">
+        <h2>Team 13 Members</h2>
+        <ul>
+            <li>Liu jiajun - 24459720</li>
+            <li>Chen Yiming - 24434515</li>
+            <li>Zheng Lechen - 24474002</li>
+            <li>Wu Guanao - 24464317</li>
+            <li>Chang Xiaotong - 24434450</li>
+            <li>Tang Ziyan - 24466646</li>
+        </ul>
+    </section>
+</section>
+
+<footer>
+    <p>Contact us: support@greenworld.com</p>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Login - Green World</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* 简单苹果风格容器，可与 style.css 合并 */
+    .login-container {
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      animation: fadeIn 1s ease-out;
+    }
+    .login-container h3 {
+      text-align: center;
+      color: #0070c9;
+    }
+    .login-container form p {
+      margin: 15px 0;
+    }
+    .login-container label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+    .login-container input:focus {
+      border-color: #0070c9;
+    }
+    .login-container button {
+      width: 100%;
+      padding: 10px;
+      background-color: #0070c9;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .login-container button:hover {
+      background-color: #005ea6;
+    }
+    #login-message {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 1rem;
+      color: #d9534f;
+    }
+    .register-link {
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+      color: #0070c9;
+      text-decoration: none;
+    }
+    .register-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-container">
+    <img src="ecofriendly-planet-earth-covered-lush-green-vegetation-transparent-background_84443-28001.jpg.avif" alt="Eco Friendly Planet" class="header-photo">
+    <h1>Green World Online Shop</h1>
+  </div>
+  <nav style="text-align:center; margin-top:10px;">
+    <a href="projectHomePage.html">Home</a>
+    <a href="adminLogin.html">Admin Login</a>
+  </nav>
+</header>
+
+<section>
+  <div class="login-container">
+    <h3>User Login</h3>
+    <form id="user-login-form">
+      <p>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+      </p>
+      <p>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+      </p>
+      <button type="submit">Login</button>
+    </form>
+    <a class="register-link" href="register.html">New user? Register here</a>
+    <div id="login-message"></div>
+  </div>
+</section>
+
+<footer>
+  <p>Contact us: support@greenworld.com</p>
+</footer>
+
+<script src="js/login.js"></script>
+</body>
+</html>

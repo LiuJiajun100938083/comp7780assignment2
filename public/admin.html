@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel - Green World Online Shop</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Admin Panel 专用样式 */
+    .admin-container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      animation: fadeIn 1s ease-out;
+    }
+    .admin-container h2 {
+      text-align: center;
+      color: #0070c9;
+      margin-bottom: 20px;
+    }
+    .product-list {
+      margin-bottom: 40px;
+    }
+
+    /* 让 product-card 使用 Flex 布局，避免跑位 */
+    .product-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;            /* 图片、文本、按钮之间的间距 */
+      border: 1px solid #eee;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      background-color: #fafafa;
+      transition: box-shadow 0.3s ease;
+    }
+    .product-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    /* 图片区域 */
+    .product-img {
+      width: 150px;
+      height: 150px;
+      overflow: hidden;     /* 超出部分隐藏，防止图片撑开布局 */
+      border-radius: 8px;
+      flex-shrink: 0;       /* 防止图片被压缩 */
+    }
+    .product-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;    /* 让图片自适应裁剪 */
+    }
+
+    /* 文本信息区域 */
+    .product-info {
+      flex: 1;              /* 占据剩余空间 */
+    }
+    .product-info p {
+      margin: 5px 0;
+    }
+
+    /* 按钮区域 */
+    .product-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .product-actions button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      background-color: #0070c9;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .product-actions button:hover {
+      background-color: #005ea6;
+    }
+
+    /* 编辑表单 */
+    .edit-form {
+      width: 100%;
+      background-color: #fefefe;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-top: 10px;
+      display: none;       /* 默认隐藏，点击 Edit 后显示 */
+    }
+    .edit-form input[type="text"],
+    .edit-form input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      transition: border-color 0.3s ease;
+    }
+    .edit-form input:focus {
+      border-color: #0070c9;
+    }
+    .edit-form button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: #0070c9;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-right: 10px;
+    }
+    .edit-form button:hover {
+      background-color: #005ea6;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-container">
+    <img src="ecofriendly-planet-earth-covered-lush-green-vegetation-transparent-background_84443-28001.jpg.avif" alt="Eco Friendly Planet" class="header-photo">
+    <h1>Green World Online Shop</h1>
+  </div>
+  <nav style="text-align:center; margin-top:10px;">
+    <a href="projectHomePage.html">Home</a>
+    <a href="adminLogin.html">Logout</a>
+  </nav>
+</header>
+
+<section>
+  <div class="admin-container">
+    <h2>Admin Panel</h2>
+
+    <!-- 产品列表区域 -->
+    <div class="product-list" id="admin-products">
+      <!-- 动态加载的商品列表 -->
+    </div>
+
+    <!-- 添加商品表单 -->
+    <h3>Add Product</h3>
+    <form id="add-product-form">
+      <p>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Product Name" required>
+      </p>
+      <p>
+        <label for="original_price">Original Price:</label>
+        <input type="number" id="original_price" name="original_price" step="0.01" placeholder="e.g., 29999" required>
+      </p>
+      <p>
+        <label for="discounted_price">Discounted Price:</label>
+        <input type="number" id="discounted_price" name="discounted_price" step="0.01" placeholder="e.g., 10000" required>
+      </p>
+      <p>
+        <label for="image_url">Image URL:</label>
+        <input type="text" id="image_url" name="image_url" placeholder="images/your_image.png or full URL" required>
+      </p>
+      <p>
+        <label for="stock">Stock:</label>
+        <input type="number" id="stock" name="stock" placeholder="e.g., 10" required>
+      </p>
+      <button type="submit">Add Product</button>
+    </form>
+
+    <div id="admin-message" style="margin-top:20px; text-align:center;"></div>
+  </div>
+</section>
+
+<script src="js/admin.js"></script>
+</body>
+</html>
