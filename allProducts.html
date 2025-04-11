@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>All Products - Green World Online Shop</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* 背景图片与半透明覆盖层 */
+    body {
+      background:
+              linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)),
+              url('https://your-direct-image-url.com/mountains.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    /* 可选：对所有产品页面的产品卡片稍作调整 */
+    .products-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .product-card {
+      width: 300px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 15px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      margin-bottom: 20px;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .product-title {
+      font-size: 1.5rem;
+      margin: 10px 0;
+    }
+
+    .product-price,
+    .product-stock {
+      font-size: 1.1rem;
+      margin: 5px 0;
+      color: #0070c9;
+    }
+
+    /* 设置顶部导航背景色和按钮样式 */
+    header {
+      background-color: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+
+    nav a {
+      margin: 0 10px;
+      padding: 8px 12px;
+      text-decoration: none;
+      color: #0070c9;
+      font-weight: 500;
+      border: 1px solid #0070c9;
+      border-radius: 6px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    nav a:hover {
+      background-color: #0070c9;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-container" style="position: relative;">
+    <img src="ecofriendly-planet-earth-covered-lush-green-vegetation-transparent-background_84443-28001.jpg.avif" alt="Eco Friendly Planet" class="header-photo">
+    <h1>Green World Online Shop</h1>
+    <!-- 右上角购物车按钮 -->
+    <a href="cart.html" class="cart-button" style="position: absolute; right: 20px; top: 20px; background-color: #0070c9; color: #fff; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-weight: 500;">Cart</a>
+  </div>
+  <nav style="text-align: center; margin-top: 10px;">
+    <a href="login.html">User Login</a>
+    <a href="adminLogin.html">Admin Login</a>
+    <a href="projectHomePage.html">Home</a>
+  </nav>
+  <div id="user-info" style="text-align:center; margin-top:10px;"></div>
+</header>
+
+<section>
+  <!-- 可选：介绍区域 -->
+  <article class="introduction" style="max-width: 800px; margin: 20px auto;">
+    <h3>All Products</h3>
+    <p>Browse our complete collection of products available at Green World Online Shop.</p>
+  </article>
+
+  <!-- 所有产品展示区域 -->
+  <div class="products-container" id="all-products-container">
+    <!-- 这里通过 js/allProducts.js 动态加载所有产品 -->
+  </div>
+</section>
+
+<footer>
+  <p>Contact us: support@greenworld.com</p>
+</footer>
+
+<script src="js/allProducts.js"></script>
+</body>
+</html>

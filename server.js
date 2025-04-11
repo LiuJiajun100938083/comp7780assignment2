@@ -1,17 +1,17 @@
 const express = require('express');
 const path = require('path');
-const mysql = require('mysql2/promise');
+const mysql = require('mysql2/promise'); // Promise 方式使用 mysql2
 const session = require('express-session');
 
 const app = express();
 const PORT = 3005;
 
-// MySQL 连接信息
+// 修改为你自己的 MySQL 连接信息
 const pool = mysql.createPool({
     host: 'localhost',
-    user: 'root',
-    password: 'liujiajun',
-    database: 'greenworld_db',
+    user: 'root',                 // 请替换为你的 MySQL 用户名
+    password: 'liujiajun',         // 请替换为你的 MySQL 密码
+    database: 'greenworld_db',     // 请确保该数据库已创建
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // 使用 session 中间件
 app.use(session({
-    secret: 'your_secret_key',
+    secret: 'your_secret_key', // 修改为你自己的密钥
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 24 * 60 * 60 * 1000 } // 24小时
@@ -33,41 +33,40 @@ app.use(session({
 // 初始化数据库：创建所需的表并插入示例数据
 async function initDB() {
     try {
-        // 创建 products 表
+        // 创建 products 表，增加 stock 字段
         await pool.query(`
-      CREATE TABLE IF NOT EXISTS products (
-        product_id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(255),
-        original_price DECIMAL(10,2),
-        discounted_price DECIMAL(10,2),
-        image_url VARCHAR(255),
-        stock INT DEFAULT 0
-      )
-    `);
+            CREATE TABLE IF NOT EXISTS products (
+                                                    product_id INT AUTO_INCREMENT PRIMARY KEY,
+                                                    name VARCHAR(255),
+                original_price DECIMAL(10,2),
+                discounted_price DECIMAL(10,2),
+                image_url VARCHAR(255),
+                stock INT DEFAULT 0
+                )
+        `);
         console.log("Products table created or already exists.");
 
-        // 检查并插入示例产品（如果表中没有数据）
         let [rows] = await pool.query("SELECT COUNT(*) as count FROM products");
         if (rows[0].count === 0) {
             const insertProduct = `
-        INSERT INTO products (name, original_price, discounted_price, image_url, stock) VALUES 
-        ('City Cruiser', 29999, 10000, '截圖 2025-03-05 15.08.10.png', 10),
-        ('Mountain Explorer', 29999, 10000, '截圖 2025-03-05 15.08.42.png', 20),
-        ('Speedster Pro', 29999, 10000, '截圖 2025-03-05 15.09.07.png', 15)
-      `;
+                INSERT INTO products (name, original_price, discounted_price, image_url, stock) VALUES
+                                                                                                    ('City Cruiser', 29999, 10000, '截圖 2025-03-05 15.08.10.png', 10),
+                                                                                                    ('Mountain Explorer', 29999, 10000, '截圖 2025-03-05 15.08.42.png', 20),
+                                                                                                    ('Speedster Pro', 29999, 10000, '截圖 2025-03-05 15.09.07.png', 15)
+            `;
             await pool.query(insertProduct);
             console.log("Inserted sample products with stock.");
         }
 
         // 创建 users 表
         await pool.query(`
-      CREATE TABLE IF NOT EXISTS users (
-        user_id INT AUTO_INCREMENT PRIMARY KEY,
-        username VARCHAR(50) UNIQUE,
-        password VARCHAR(255),
-        role ENUM('customer','admin') DEFAULT 'customer'
-      )
-    `);
+            CREATE TABLE IF NOT EXISTS users (
+                                                 user_id INT AUTO_INCREMENT PRIMARY KEY,
+                                                 username VARCHAR(50) UNIQUE,
+                password VARCHAR(255),
+                role ENUM('customer','admin') DEFAULT 'customer'
+                )
+        `);
         console.log("Users table created or already exists.");
         [rows] = await pool.query("SELECT COUNT(*) as count FROM users WHERE username='admin'");
         if (rows[0].count === 0) {
@@ -77,21 +76,20 @@ async function initDB() {
 
         // 创建 cart_items 表
         await pool.query(`
-      CREATE TABLE IF NOT EXISTS cart_items (
-        cart_item_id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT,
-        product_id INT,
-        quantity INT,
-        FOREIGN KEY(user_id) REFERENCES users(user_id),
-        FOREIGN KEY(product_id) REFERENCES products(product_id)
-      )
-    `);
+            CREATE TABLE IF NOT EXISTS cart_items (
+                                                      cart_item_id INT AUTO_INCREMENT PRIMARY KEY,
+                                                      user_id INT,
+                                                      product_id INT,
+                                                      quantity INT,
+                                                      FOREIGN KEY(user_id) REFERENCES users(user_id),
+                FOREIGN KEY(product_id) REFERENCES products(product_id)
+                )
+        `);
         console.log("Cart items table created or already exists.");
     } catch (err) {
         console.error("Error during DB initialization:", err.message);
     }
 }
-
 initDB();
 
 // ---------- API 接口 ----------
@@ -165,28 +163,23 @@ app.get('/api/products', async (req, res) => {
     }
 });
 
-// ---------- 购物车 API（使用 MySQL 存储购物车数据） ----------
+// ---------- 购物车 API ----------
 
-// 添加商品到购物车（存在则更新数量，并检查库存）
+// 添加商品到购物车（存在则更新数量，并检查库存限制）
 app.post('/api/cart/add', async (req, res) => {
     try {
         if (!req.session.user) return res.status(401).json({ error: "Not logged in." });
         const userId = req.session.user.user_id;
         const { product_id, quantity } = req.body;
         const qty = parseInt(quantity) || 1;
-
-        // 查询产品库存
         let [prodRows] = await pool.query("SELECT stock FROM products WHERE product_id = ?", [product_id]);
         if (prodRows.length === 0) return res.json({ error: "Product not found." });
         const availableStock = prodRows[0].stock;
-
-        // 查询购物车中是否已有该商品
         let [cartRows] = await pool.query("SELECT * FROM cart_items WHERE user_id = ? AND product_id = ?", [userId, product_id]);
         let newQty = qty;
         if (cartRows.length > 0) {
             newQty = cartRows[0].quantity + qty;
         }
-        // 检查库存限制
         if (newQty > availableStock) {
             return res.json({ error: "Requested quantity exceeds available stock." });
         }
@@ -208,11 +201,11 @@ app.get('/api/cart', async (req, res) => {
         if (!req.session.user) return res.status(401).json({ error: "Not logged in." });
         const userId = req.session.user.user_id;
         let [rows] = await pool.query(`
-      SELECT c.cart_item_id, c.product_id, c.quantity, p.name, p.discounted_price, p.stock
-      FROM cart_items c 
-      JOIN products p ON c.product_id = p.product_id
-      WHERE c.user_id = ?
-    `, [userId]);
+            SELECT c.cart_item_id, c.product_id, c.quantity, p.name, p.discounted_price, p.stock
+            FROM cart_items c
+                     JOIN products p ON c.product_id = p.product_id
+            WHERE c.user_id = ?
+        `, [userId]);
         let total = 0;
         const items = rows.map(item => {
             if (item.quantity > item.stock) {
@@ -235,7 +228,6 @@ app.post('/api/cart/update', async (req, res) => {
         const userId = req.session.user.user_id;
         const { product_id, quantity } = req.body;
         const qty = parseInt(quantity);
-        // 查询产品库存
         let [prodRows] = await pool.query("SELECT stock FROM products WHERE product_id = ?", [product_id]);
         if (prodRows.length === 0) return res.json({ error: "Product not found." });
         const availableStock = prodRows[0].stock;
@@ -302,17 +294,19 @@ app.post('/api/admin/update', async (req, res) => {
     }
 });
 
+// ---------- 结算接口 ----------
+
 // 结算接口：检查库存、减少库存并清空购物车
 app.post('/api/checkout', async (req, res) => {
     try {
         if (!req.session.user) return res.status(401).json({ error: "Not logged in." });
         const userId = req.session.user.user_id;
         let [rows] = await pool.query(`
-      SELECT c.cart_item_id, c.product_id, c.quantity, p.stock
-      FROM cart_items c 
-      JOIN products p ON c.product_id = p.product_id
-      WHERE c.user_id = ?
-    `, [userId]);
+            SELECT c.cart_item_id, c.product_id, c.quantity, p.stock
+            FROM cart_items c
+                     JOIN products p ON c.product_id = p.product_id
+            WHERE c.user_id = ?
+        `, [userId]);
         for (let item of rows) {
             if (item.stock < item.quantity) {
                 return res.json({ error: `Insufficient stock for product ID ${item.product_id}` });
@@ -329,7 +323,8 @@ app.post('/api/checkout', async (req, res) => {
     }
 });
 
-// 示例结算页面接口（模仿老师例子，集成 PayPal 按钮）
+// ---------- 示例结算页面接口 ----------
+// 模仿老师示例，生成结算页面 HTML（含 PayPal 按钮外观，不真实调用 PayPal 服务）
 app.get('/check_out', async (req, res) => {
     try {
         if (!req.session || !req.session.user) {
@@ -337,11 +332,11 @@ app.get('/check_out', async (req, res) => {
         }
         const userId = req.session.user.user_id;
         let [rows] = await pool.query(`
-      SELECT c.cart_item_id, c.product_id, c.quantity, p.name, p.discounted_price
-      FROM cart_items c 
-      JOIN products p ON c.product_id = p.product_id
-      WHERE c.user_id = ?
-    `, [userId]);
+            SELECT c.cart_item_id, c.product_id, c.quantity, p.name, p.discounted_price
+            FROM cart_items c
+                     JOIN products p ON c.product_id = p.product_id
+            WHERE c.user_id = ?
+        `, [userId]);
         if (rows.length === 0) return res.send("Your cart is empty.");
 
         let total_due = 0;
@@ -350,12 +345,12 @@ app.get('/check_out', async (req, res) => {
             let subtotal = item.quantity * item.discounted_price;
             total_due += subtotal;
             tableRows += `<tr>
-          <td>${item.product_id}</td>
-          <td>${item.name}</td>
-          <td>${item.quantity}</td>
-          <td>${item.discounted_price}</td>
-          <td>${subtotal.toFixed(2)}</td>
-      </tr>`;
+                <td>${item.product_id}</td>
+                <td>${item.name}</td>
+                <td>${item.quantity}</td>
+                <td>${item.discounted_price}</td>
+                <td>${subtotal.toFixed(2)}</td>
+            </tr>`;
         });
 
         let responseText = '<!DOCTYPE html><html lang="en"><head>';
@@ -370,9 +365,10 @@ app.get('/check_out', async (req, res) => {
         responseText += tableRows;
         responseText += '</table>';
         responseText += `<p><strong>Total Due: HKD ${total_due.toFixed(2)}</strong></p>`;
+        // 模拟 PayPal 信息部分
         responseText += '<script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID"></script>';
         responseText += '<div id="paypal-button-container"></div>';
-        responseText += '<p id="paypal-message"></p>';
+        responseText += '<p id="txt1"></p>';
         responseText += '<script>';
         responseText += 'paypal.Buttons({';
         responseText += 'createOrder: function(data, actions) {';
@@ -385,7 +381,9 @@ app.get('/check_out', async (req, res) => {
         responseText += 'onApprove: function(data, actions) {';
         responseText += 'return actions.order.capture().then(function(details) {';
         responseText += 'alert("Transaction completed by " + details.payer.name.given_name);';
-        responseText += 'document.querySelector("#paypal-message").innerHTML = "Payment has completed! This page can now be closed.";';
+        responseText += 'document.querySelector("#txt1").innerHTML = "Payment has completed! This page can now be closed.";';
+        responseText += 'document.querySelector("#txt1").style.backgroundColor = "yellow";';
+        responseText += 'document.querySelector("#txt1").style.color = "red";';
         responseText += '});';
         responseText += '}';
         responseText += '}).render("#paypal-button-container");';
@@ -395,6 +393,11 @@ app.get('/check_out', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
+});
+
+// 设置根目录路由指向首页
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'projectHomePage.html'));
 });
 
 app.listen(PORT, () => {

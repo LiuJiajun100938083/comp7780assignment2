@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Green World Online Shop</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 设置背景图片和半透明覆盖层 */
+        body {
+            background:
+                    linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)),
+                    url('https://cff2.earth.com/uploads/2023/06/02100547/Mountain-2.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        /* 浮动动画 */
+        @keyframes floatAnimation {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+        .floating {
+            animation: floatAnimation 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-container" style="position: relative;">
+        <img src="ecofriendly-planet-earth-covered-lush-green-vegetation-transparent-background_84443-28001.jpg.avif" alt="Eco Friendly Planet" class="header-photo">
+        <h1>Green World Online Shop</h1>
+        <!-- 右上角购物车按钮 -->
+        <a href="cart.html" class="cart-button" style="position: absolute; right: 20px; top: 20px; background-color: #0070c9; color: #fff; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-weight: 500;">Cart</a>
+    </div>
+    <nav style="text-align:center; margin-top:10px;">
+        <a href="login.html">User Login</a>
+        <a href="adminLogin.html">Admin Login</a>
+        <!-- 新增全部商品页面链接 -->
+        <a href="allProducts.html">All Products</a>
+    </nav>
+    <!-- 显示用户登录信息 -->
+    <div id="user-info" style="text-align:center; margin-top:10px;"></div>
+</header>
+
+<section>
+    <!-- Green World介绍 -->
+    <article class="introduction">
+        <h3>GreenWorld! Online Shop</h3>
+        <p>Our goal is to promote "Green Environment" by recycling items you no longer need and selling them to the public for a discounted price.</p>
+        <p>All sales final - No refund or exchange.</p>
+        <p>Once we receive your payment, we will contact you for delivery.</p>
+    </article>
+
+    <!-- 随机产品展示区域，仅显示 3 个商品 -->
+    <div class="products-container" id="random-products-container"></div>
+</section>
+
+<footer>
+    <!-- 增加小组成员信息 -->
+    <div class="team-members" style="text-align: center; margin-top: 20px; font-size: 1rem; color: #333;">
+        <p>Team Members:</p>
+        <ul style="list-style: none; padding: 0;">
+            <li>Liu jiajun - 24459720</li>
+            <li>Chen Yiming - 24434515</li>
+            <li>Zheng Lechen - 24474002</li>
+            <li>Wu Guanao - 24464317</li>
+            <li>Chang Xiaotong - 24434450</li>
+            <li>Tang Ziyan - 24466646</li>
+        </ul>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

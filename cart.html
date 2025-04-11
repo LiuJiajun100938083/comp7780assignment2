@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Shopping Cart - Green World Online Shop</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .cart-container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      animation: fadeIn 1s ease-out;
+    }
+    .cart-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #eee;
+      padding: 10px 0;
+    }
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+    .cart-item p {
+      margin: 0 10px;
+    }
+    .cart-actions button {
+      padding: 6px 10px;
+      border: none;
+      border-radius: 6px;
+      background-color: #0070c9;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .cart-actions button:hover {
+      background-color: #005ea6;
+    }
+    .total-price {
+      text-align: right;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    #checkout-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      background-color: #0070c9;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      display: block;
+      width: 100%;
+      max-width: 200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #checkout-btn:hover {
+      background-color: #005ea6;
+    }
+
+    /* 模态（Modal）样式 */
+    .modal {
+      display: none; /* 默认隐藏 */
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5); /* 灰色半透明背景 */
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 8px;
+    }
+    .modal-actions {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .modal-actions button {
+      padding: 10px 20px;
+      margin: 0 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #confirm-btn {
+      background-color: #0070c9;
+      color: #fff;
+    }
+    #confirm-btn:hover {
+      background-color: #005ea6;
+    }
+    #cancel-btn {
+      background-color: #ccc;
+      color: #333;
+    }
+    #cancel-btn:hover {
+      background-color: #aaa;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-container">
+    <img src="ecofriendly-planet-earth-covered-lush-green-vegetation-transparent-background_84443-28001.jpg.avif" alt="Eco Friendly Planet" class="header-photo">
+    <h1>Green World Online Shop</h1>
+  </div>
+  <nav style="text-align:center; margin-top:10px;">
+    <a href="projectHomePage.html">Home</a>
+    <a href="login.html">User Login</a>
+    <a href="adminLogin.html">Admin Login</a>
+    <a href="cart.html" class="cart-button" style="background-color:#0070c9; color:#fff; padding:8px 12px; border-radius:6px; text-decoration:none; font-weight:500;">Cart</a>
+  </nav>
+</header>
+
+<section>
+  <div class="cart-container">
+    <h2>Your Shopping Cart</h2>
+    <div id="cart-items">
+      <!-- 购物车商品加载在这里 -->
+    </div>
+    <div class="total-price" id="total-price">Total: HKD 0.00</div>
+    <button id="checkout-btn">Checkout</button>
+  </div>
+</section>
+
+<footer>
+  <p>Contact us: support@greenworld.com</p>
+</footer>
+
+<!-- 模态弹窗 -->
+<div id="checkout-modal" class="modal">
+  <div class="modal-content">
+    <h2>Order Confirmation</h2>
+    <div id="order-details">
+      <!-- 订单详情将动态注入在这里 -->
+    </div>
+    <div class="modal-actions">
+      <button id="confirm-btn">Confirm</button>
+      <button id="cancel-btn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/cart.js"></script>
+</body>
+</html>
